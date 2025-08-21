@@ -1,0 +1,39 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+require('dotenv').config();
+
+const clinicalDiagnosisRoutes = require('./routes/clinicalDiagnosisRoutes');
+const coMorbiditiesRoutes = require('./routes/coMorbiditiesRoutes');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Routes
+app.use('/api/clinical-diagnosis', clinicalDiagnosisRoutes);
+app.use('/api/co-morbidities', coMorbiditiesRoutes);
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'OK', message: 'Server is running' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ status: 'error', message: 'Something went wrong!' });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ status: 'error', message: 'Endpoint not found' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
