@@ -1,10 +1,11 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-require('dotenv').config();
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+require("dotenv").config();
 
-const clinicalDiagnosisRoutes = require('./routes/clinicalDiagnosisRoutes');
-const coMorbiditiesRoutes = require('./routes/coMorbiditiesRoutes');
+const clinicalDiagnosisRoutes = require("./routes/clinicalDiagnosisRoutes");
+const coMorbiditiesRoutes = require("./routes/coMorbiditiesRoutes");
+const investigationRoutes = require("./routes/investigationRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,23 +16,24 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
-app.use('/api/clinical-diagnosis', clinicalDiagnosisRoutes);
-app.use('/api/co-morbidities', coMorbiditiesRoutes);
+app.use("/api/clinical-diagnosis", clinicalDiagnosisRoutes);
+app.use("/api/co-morbidities", coMorbiditiesRoutes);
+app.use("/api/investigation", investigationRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Server is running' });
+app.get("/health", (req, res) => {
+  res.json({ status: "OK", message: "Server is running" });
 });
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ status: 'error', message: 'Something went wrong!' });
+  res.status(500).json({ status: "error", message: "Something went wrong!" });
 });
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ status: 'error', message: 'Endpoint not found' });
+  res.status(404).json({ status: "error", message: "Endpoint not found" });
 });
 
 app.listen(PORT, () => {

@@ -1,19 +1,19 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   coMorbiditiesCRUD,
   getCoMorbidities,
-  getCoMorbidityById
-} = require('../controllers/coMorbiditiesController');
-const { validateCoMorbidities } = require('../middleware/validation');
+  getCoMorbidityById,
+} = require("../controllers/coMorbiditiesController");
+const { validateCoMorbidities } = require("../middleware/validation");
 
 // CRUD operations
-router.post('/crud', validateCoMorbidities, coMorbiditiesCRUD);
+router.post("/crud", validateCoMorbidities, coMorbiditiesCRUD);
 
 // Get all co-morbidities (optional filter by status)
-router.get('/', getCoMorbidities);
+router.get("/", getCoMorbidities);
 
 // Get co-morbidity by ID
-router.get('/:id', getCoMorbidityById);
+router.get("/:id", getCoMorbidityById);
 
 module.exports = router;
