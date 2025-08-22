@@ -5,11 +5,11 @@ exports.investigationCrud = async (req, res) => {
   try {
     const params = req.body; // { action_mode, id, name, user }
 
-    // Call the PostgreSQL function (returns JSON)
     const { rows } = await pool.query(
       "SELECT public.fn_investigation_master_crud($1) as result",
       [params]
     );
+    res.json(rows[0].result);
 
     // Send the JSON result
     res.json(rows[0].result);

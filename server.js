@@ -6,6 +6,9 @@ require("dotenv").config();
 const clinicalDiagnosisRoutes = require("./routes/clinicalDiagnosisRoutes");
 const coMorbiditiesRoutes = require("./routes/coMorbiditiesRoutes");
 const investigationRoutes = require("./routes/investigationRoutes");
+// const hospitalRoutes = require("./routes/hospitalRoutes");
+const hospitalRoutes = require("./routes/hospitalRoutes");
+const doctorRoutes = require("./routes/doctorRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,6 +22,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/clinical-diagnosis", clinicalDiagnosisRoutes);
 app.use("/api/co-morbidities", coMorbiditiesRoutes);
 app.use("/api/investigation", investigationRoutes);
+app.use("/api/hospitals", hospitalRoutes);
+app.use("/api/doctors", doctorRoutes);
+
 
 // Health check endpoint
 app.get("/health", (req, res) => {
