@@ -30,9 +30,13 @@ exports.getAllDoctors = async (req, res) => {
 exports.getDoctorById = async (req, res) => {
   try {
     const id = req.params.id;
-    const { rows } = await pool.query("SELECT * FROM t_doctors WHERE id = $1", [id]);
+    const { rows } = await pool.query("SELECT * FROM t_doctors WHERE id = $1", [
+      id,
+    ]);
     if (rows.length === 0)
-      return res.status(404).json({ success: false, msg: "Doctor not found", data: null });
+      return res
+        .status(404)
+        .json({ success: false, msg: "Doctor not found", data: null });
     res.json({ success: true, msg: "Doctor fetched", data: rows[0] });
   } catch (err) {
     console.error(err);

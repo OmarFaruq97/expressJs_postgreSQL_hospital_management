@@ -8,7 +8,7 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.REDIRECT_URI
 );
 
-// Important: set refresh token
+// set refresh token
 oauth2Client.setCredentials({
   refresh_token: process.env.REFRESH_TOKEN,
 });
@@ -46,6 +46,5 @@ exports.uploadFile = async (req, res) => {
   } catch (err) {
     console.error("Upload Error:", err); // full error object
     res.status(500).json({ status: "error", message: "File upload failed" });
-}
-  
+  }
 };
