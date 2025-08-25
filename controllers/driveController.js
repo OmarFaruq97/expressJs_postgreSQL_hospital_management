@@ -1,5 +1,45 @@
 const { google } = require("googleapis");
 const fs = require("fs");
+
+const oAuth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URI
+);
+
+oAuth2Client.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+
+const drive = google.drive({ version: "v3", auth: oAuth2Client });
+
+const uploadFile = async (req, res) => {
+  try {
+    if (!req.file)
+      return res
+        .status(400)
+        .json({ status: "error", message: "No file uploaded" });
+
+    const fileMetadata = { name: req.file.originalname };
+    const media = { mimeType: req.file.mimetype, body: fs.createReadStream(req.file.path) };
+
+    const response = await drive.files.create({
+      resource: fileMetadata,
+      media: media,
+      fields: "id, name",
+    });
+
+    res.status(200).json({ status: "success", file: response.data });
+  } catch (err) {
+    console.error("Upload Error:", err);
+    res.status(500).json({ status: "error", message: "File upload failed", error: err.message });
+  }
+};
+
+module.exports = { uploadFile };
+
+
+
+/*const { google } = require("googleapis");
+const fs = require("fs");
 require("dotenv").config();
 
 const oauth2Client = new google.auth.OAuth2(
@@ -48,3 +88,4 @@ exports.uploadFile = async (req, res) => {
     res.status(500).json({ status: "error", message: "File upload failed" });
   }
 };
+*/
